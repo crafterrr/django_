@@ -112,7 +112,6 @@ def login(request):
                                  {'username': username, 'password': password})
             if resp.status_code == 403:
                 return HttpResponse(resp.content, status=403)
-            print(resp.json()['token'])
             request.session['api_token'] = resp.json()['token']
             return HttpResponseRedirect('http://127.0.0.1:8000/todolists/')
             # return HttpResponse('Your access token is {}'.format(resp.json()['token']))
@@ -207,7 +206,6 @@ def task_edit_view(request, list_id, pk):
         if form.is_valid():
             resp = send_request('todolists/{}/tasks/{}/'.format(list_id, pk), form.cleaned_data, requests.put,
                                 request.session)
-            print(resp.content)
             if resp.status_code == 403:
                 return HttpResponse(resp.content, status=403)
             if resp.status_code == 401:
