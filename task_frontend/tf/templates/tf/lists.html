@@ -1,0 +1,24 @@
+<p>Your tasklists:</p>
+{% if todo_lists %}
+    <ul>
+    {% for l in todo_lists %}
+        <li><a href="/todolists/{{ l.id }}/tasks">{{ l.name|title }}</a> <a href="/todolists/{{ l.id }}/"> Rename </a> <a href="/todolists/{{ l.id }}/share/"> Share </a> <a href="/todolists/{{ l.id }}/delete"> Delete </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There is no your lists yet.</p>
+{% endif %}
+<a href="create/"> Add tasklist </a>
+
+<p>Tasklists shared with you:</p>
+{% if shared_lists %}
+    <ul>
+    {% for l in shared_lists %}
+        <li><a href="/todolists/shared/{{ l.id }}/">{{ l.name|title }}</a>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There is no shared lists yet.</p>
+{% endif %}
+
+<li><a href="/logout/"> Log out </a>

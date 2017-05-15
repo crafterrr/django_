@@ -1,0 +1,16 @@
+{% if task %}
+<ul>
+{% for k in task %}
+	<li> {{ k.0 | title}}:  {{ k.1 }} </li>
+{% endfor %}
+</ul>
+<form method="POST" class="post-form">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Add tag" />
+</form>
+<a href="edit/"> Edit </a>
+{% else %}
+    <p>Task does not exist.</p>
+{% endif %}
+<li><a href=".."> To tasks </a></li>

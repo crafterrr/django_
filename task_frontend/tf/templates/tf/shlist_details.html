@@ -1,0 +1,16 @@
+{% if tasklist %}
+{% for task in tasklist %}
+{% if task.name %}
+<p>
+    <li> Name: {{ task.name }} </li>
+    <li> Desc: {{ task.description }} </li>
+    <li> Priority: {{ task.priority }} </li>
+    <li> Completed: {{ task.completed }} </li>
+    <li> Tags: {{ task.tags }} </li>
+</p>
+{% endif %}
+{% endfor %}
+{% else %}
+    <p>There is no tasks yet.</p>
+{% endif %}
+<ul><a href="/todolists/"> To tasklists </a></ul>
