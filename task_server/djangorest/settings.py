@@ -123,8 +123,8 @@ USE_TZ = True
 
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "todorest@mail.ru"
-EMAIL_HOST_PASSWORD = 'djangoadmin'
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_SSL = True
 
 # Static files (CSS, JavaScript, Images)
