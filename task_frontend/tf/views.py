@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import requests
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django import forms
+from .forms import *
 
 
 def send_request(url, datadict, req_type, session):
@@ -17,53 +17,13 @@ def send_request(url, datadict, req_type, session):
     return resp
 
 
-class ShareForm(forms.Form):
-    resp = requests.get('http://127.0.0.1:8080/users/',
-                        headers=dict(Authorization='Token b567feab95d27420161875fb21abe1a9e1582a0d'))
-    choice = [(i['id'], i['username']) for i in resp.json()]
-    user = forms.ChoiceField(choices=choice)
-
-
-class LoginForm(forms.Form):
-    login = forms.CharField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput(), required=True)
-
-
-class TagForm(forms.Form):
-    tagname = forms.CharField(required=True)
-
-
-class RegisterForm(forms.Form):
-    email = forms.EmailField(required=True)
-    login = forms.CharField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput(), required=True)
-
-
-class TaskForm(forms.Form):
-    name = forms.CharField(required=True)
-    completed = forms.BooleanField(required=False)
-    description = forms.CharField(required=False)
-    priority = forms.ChoiceField(choices=(
-        ('h', 'High'),
-        ('m', 'Medium'),
-        ('l', 'Low'),
-        ('n', 'None')
-    ))
-    due_date = forms.DateField(widget=forms.SelectDateWidget(), required=False)
-
-
-class ListForm(forms.Form):
-    name = forms.CharField(required=True)
-
-
 def list_share_view(request, pk):
     resp = send_request('todolists/{}/'.format(pk), {}, requests.get, request.session)
     if request.method == 'POST':
         form = ShareForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['user']
-            data = {'name': resp.json()['name']}
-            data['shared'] = resp.json()['shared']
+            data = {'name': resp.json()['name'], 'shared': resp.json()['shared']}
             data['shared'].append(username)
             resp = send_request('todolists/{}/'.format(pk), data, requests.put, request.session)
             if resp.status_code == 403:
@@ -99,6 +59,7 @@ def log_out(request):
     if 'api_token' in dict(request.session).keys():
         request.session.pop('api_token')
     return HttpResponseRedirect('http://127.0.0.1:8000/login/')
+
 
 def login(request):
     if 'api_token' in dict(request.session).keys():
